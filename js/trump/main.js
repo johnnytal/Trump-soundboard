@@ -1,186 +1,54 @@
 var gameMain = function(game){
-    var sounds;
-   
     multiSounds = false;
     
     playModes = ['toggle', 'trigger', 'gate', 'pause', 'none'];
     mode = playModes[1];
+
+    sounds = [];
+    musics = [];
     
-    musicPlayed = false;
+    theButton = null;
+    
+    soundButtons = [];
+    musicButtons = [];
+ 
+    texts = [];
+    textsText = [ // text for each sound button
+	    'Bing', 'Poorly\nEducated', 'Money', "You're\nfired", 'Quiet', 'In\nSuspense', 
+	    'Bomb\nThe Shit', 'Build a\nWall', 'China', 'Billions', "Grab 'em", "Don't\nknow"
+    ];
+    
+    musicText = [];
+    textsMusicText = [ // text for each music button
+    	'Techno', 'Country', 'March'
+    ];
+    
+    SOUND_BUTTONS_N = textsText.length;
+    MUSIC_BUTTONS_N = textsMusicText.length;
 };
 
 gameMain.prototype = {
     create: function(){
-        bg = this.add.image(0, 0, 'bg');
-        bg.alpha = 0.7;
- 
-        buttonsGroup = game.add.physicsGroup(Phaser.Physics.ARCADE);
-
-        button1 = buttonsGroup.create(20, 15, 'button');
-        button2 = buttonsGroup.create(295, 15, 'button');
-        button3 = buttonsGroup.create(570, 15, 'button');
-        button4 = buttonsGroup.create(20, 235, 'button');
-        button5 = buttonsGroup.create(295, 235, 'button');
-        button6 = buttonsGroup.create(570, 235, 'button');
-        
-        button71 = buttonsGroup.create(20, 455, 'button');
-        button81 = buttonsGroup.create(295, 455, 'button');
-        button91 = buttonsGroup.create(570, 455, 'button');
-        button101 = buttonsGroup.create(20, 675, 'button');
-        button111 = buttonsGroup.create(295, 675, 'button');
-        button121 = buttonsGroup.create(570, 675, 'button');
-        
-        button200 = buttonsGroup.create(450, 900, 'musicBtn');
-        button200.tint = 0xffff00;
-        
-        button7 = this.add.sprite(650, 900, 'gear');
-        button7.tint = 0xffff00;
-        
-        button1.inputEnabled = true;
-        button2.inputEnabled = true;
-        button3.inputEnabled = true;
-        button4.inputEnabled = true;
-        button5.inputEnabled = true;
-        button6.inputEnabled = true;
-        button71.inputEnabled = true;
-        button81.inputEnabled = true;
-        button91.inputEnabled = true;
-        button101.inputEnabled = true;
-        button111.inputEnabled = true;
-        button7.inputEnabled = true;
-        button121.inputEnabled = true;
-        button200.inputEnabled = true;
-               
-        game.add.text(button3.x + 30, 60, 'Money', {
-            font: '48px ' + font, fill: 'yellow', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        game.add.text(button2.x + 30, 60, 'Poorly', {
-            font: '44px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        game.add.text(button1.x + 35, 60, 'Bing', {
-            font: '48px ' + font, fill: 'yellow', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        
-        game.add.text(button4.x + 45, 280, 'Rosie', {
-            font: '48px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        game.add.text(button5.x + 35, 280, 'Quiet', {
-            font: '48px ' + font, fill: 'yellow', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        game.add.text(button6.x + 5, 280, 'Suspense', {
-            font: '44px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        
-        game.add.text(button71.x + 40, 500, 'Bomb', {
-            font: '48px ' + font, fill: 'yellow', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        game.add.text(button81.x + 45, 500, 'Wall', {
-            font: '48px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        game.add.text(button91.x + 40, 500, 'China', {
-            font: '48px ' + font, fill: 'yellow', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        
-        game.add.text(button101.x + 20, 720, 'Billions', {
-            font: '44px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        game.add.text(button111.x + 10, 720, "Grab 'em", {
-            font: '44px ' + font, fill: 'yellow', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-        
-        game.add.text(button121.x + 30, 710, "Don't\nknow", {
-            font: '48px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
-            stroke:'darkblue', strokeThickness: 4
-        });
-
 		loadSounds();
-
         modal = new gameModal(game);
         
-        buttons = [button1, button2, button3, button4, button5, button6, button71, button81, button91, button101, button111, button121];
+        bg = this.add.image(0, 0, 'bg');
+        bg.alpha = 0.8;
 
-        button1.events.onInputDown.add(function(){
-            playSound(sfxtrump1, button1, 0xaa55ff, '#000055');
-        }, this);
-            
-        button2.events.onInputDown.add(function(){
-            playSound(sfxtrump2, button2, 0xaa55ff, '#00ff00');
-        }, this);
-        
-        button3.events.onInputDown.add(function(){
-            playSound(sfxtrump3, button3, 0xaa55ff, '#f3fff5');
-        }, this);
-        
-        button4.events.onInputDown.add(function(){
-            playSound(sfxtrump4, button4, 0xaa55ff, '#00ffff');
-        }, this);
-        
-        button5.events.onInputDown.add(function(){
-            playSound(sfxtrump5, button5, 0xaa55ff, '#000000');
-        }, this);
-        
-        button6.events.onInputDown.add(function(){
-            playSound(sfxtrump6, button6, 0xaa55ff, '#ffd00f');
-        }, this);
-        
-        button71.events.onInputDown.add(function(){
-            playSound(sfxtrump7, button71, 0xaa55ff, '#000055');
-        }, this);
-        
-        button81.events.onInputDown.add(function(){
-            playSound(sfxtrump8, button81, 0xaa55ff, '#00ff00');
-        }, this);
-        
-        button91.events.onInputDown.add(function(){
-            playSound(sfxtrump9, button91, 0xaa55ff, '#f3fff5');
-        }, this);
-        
-        button101.events.onInputDown.add(function(){
-            playSound(sfxtrump10, button101, 0xaa55ff, '#00ffff');
-        }, this);
-        
-        button111.events.onInputDown.add(function(){
-            playSound(sfxtrump11, button111, 0xaa55ff, '#ffd00f');
-        }, this);
-        
-        button121.events.onInputDown.add(function(){
-            playSound(sfxtrump12, button121, 0xaa55ff, '#000000');
-        }, this);
+        createSoundBtns();
+        createMusicBtns();
 
-        button7.events.onInputDown.add(function(){
-            openOptions();
-        }, this);
-       
-        button200.events.onInputDown.add(function(){
-        	if (!musicPlayed){
-           		musicPlayed = true;
-           	 	sfxMusic.play();
-           	 	button200.tint = 0xaa55ff;
-            }
-            else{
-            	musicPlayed = false;
-            	sfxMusic.stop();
-            	button200.tint = 0xffffff;
-            }
-        }, this);
+        menuBtn = this.add.sprite(595, 870, 'gear');
+        menuBtn.scale.set(0.9, 0.52);
+        menuBtn.inputEnabled = true;
+        menuBtn.events.onInputDown.add(openOptions, this);
         
-        for (b = 0; b< buttons.length; b++){
-            buttons[b].events.onInputUp.add(function(){
-                if (mode == 'gate') stopSounds();
-            }, this);  
-        } 
-		
+    	settingsText = game.add.text(578, 680, 'Settings', {
+        	font: '42px ' + font, fill: 'darkgreen', align: 'center', stroke:'yellow', strokeThickness: 2
+   		});
+   		settingsText.x = menuBtn.x + menuBtn.width / 2 - settingsText.width / 2;
+   		settingsText.y = menuBtn.y + menuBtn.height / 2 - settingsText.height / 2;
+
 		setTimeout(function(){
 			try{
                 StatusBar.hide;
@@ -189,39 +57,50 @@ gameMain.prototype = {
 	            window.plugins.insomnia.keepAwake();
 	        } catch(e){}   
 		}, 2000);
+		
+		initAd();
     }
 };
 
-function stopSounds(){
-    for (n = 0; n < sounds.length; n++){
-        sounds[n].stop();
-    }   
-}
-
-function playSound(sound, button, color1, color2){
+function playSound(item, kb){	
+	var place;
+	
+	if (kb == 'kb'){
+		place = item;
+		theButton = keyNotesArray[item];
+	}
+	else{
+		place = soundButtons.indexOf(item);
+		theButton = soundButtons[place];
+	}
+	
+	var sprite = soundButtons[place];
+	var sound = sounds[place];
 
     if (!sound.isPlaying){
-        if (!multiSounds) stopSounds();
-
+        if (!multiSounds){ // no multichannel
+        	stopSounds();
+		}
+		
         if (!sound.paused){
             sound.play();    
         }
         else{
             sound.resume();
         }
-
-        button.tint = color1;
-        sound.onStop.add(function(){
-           button.tint = 0xffffff;
-        }, this);
+		
+		sprite.frame = 1;
+        sprite.tint = 0xe3dfff;
         
-        game.stage.backgroundColor = color2;
+        sound.onStop.add(function(){
+           sprite.frame = 0;
+           sprite.tint = 0xffffff;
+        }, this);
     } 
     
     else{
         if (mode == 'toggle'){
             sound.stop();
-            game.stage.backgroundColor = '#fffa6f';
         }
         else if (mode == 'trigger'){
             sound.play();
@@ -232,76 +111,97 @@ function playSound(sound, button, color1, color2){
     }    
 }
 
-function openOptions(){
-    button7.inputEnabled = false;
-    optionsColor = '0x49FFFE';
-    optionsFontSize = 45;
+function stopSounds(){
+    for (n = 0; n < sounds.length; n++){
+        sounds[n].stop();
+    }   
+}
+
+function playMusic(item){
+	var place = musicButtons.indexOf(item);
+	
+	var sprite = musicButtons[place];
+	var music = musics[place];
+	
+	if (!musics[place].isPlaying){
+   	 	musics[place].play();
+   	 	sprite.tint = 0xcc33ff;
+   	 	
+   	 	for (m=0; m<musics.length; m++){
+   	 		if (musics[m].isPlaying && m != place){
+   	 			musics[m].stop();
+   	 			musicButtons[m].tint = 0xffffff;
+   	 		}
+   	 	}
+    }
+    else{
+    	musics[place].stop();
+    	sprite.tint = 0xffffff;
+    }
+}
+
+function openOptions(_this){
+    _this.inputEnabled = false;
+    optionsColor = '0x5555ff';
+    strokeColor = "0x000000";
+    sizeFont = 48;
     
     modal.createModal({
         type:"options",
-        includeBackground: true,
-        modalCloseOnInput: false,
+        includeBackground: true, modalCloseOnInput: false,
         itemsArr: [
-            {
-                type: "image", content: "panel", offsetY: 0, offsetX: 0, contentScale: 2
+            { type: "image", content: "panel", offsetY: 0, offsetX: 0, contentScale: 2 },
+            
+            { type: "text", content: "Rewind mode:", fontSize: sizeFont, color: "0xFEFF49",
+                offsetY: -250, stroke: strokeColor, strokeThickness: 5, fontFamily: font,
             },
-            {
-                type: "text", content: "Rewind mode:", fontSize: 34, color: "0xFEFF49",
-                offsetY: -250, stroke: "0x000000", strokeThickness: 5, fontFamily: "Luckiest Guy",
-            },
-            {
-                type: "text", content: "Toggle", fontSize: optionsFontSize, color: optionsColor,
-                stroke: "0x000000", strokeThickness: 4,
-                offsetY: -150, fontFamily: "Luckiest Guy",
+            
+            { type: "text", content: "Toggle", fontSize: sizeFont, color: optionsColor,
+                stroke: strokeColor, strokeThickness: 1, offsetY: -150, fontFamily: font,
                 callback: function () {
                     changePlayMode(playModes[0], this);         
                 }
             },
-            {
-                type: "text", content: "Trigger", fontSize: optionsFontSize,
-                color: optionsColor, stroke: "0x000000", strokeThickness: 4,
-                offsetY: -70, fontFamily: "Luckiest Guy",
+            
+            { type: "text", content: "Trigger", fontSize: sizeFont, color: optionsColor, 
+                stroke: strokeColor, strokeThickness: 1, offsetY: -70, fontFamily: font,
                 callback: function () {
                     changePlayMode(playModes[1], this);
                 }
             },
-            {
-                type: "text", content: "Gate", fontSize: optionsFontSize, 
-                color: optionsColor, stroke: "0x000000", strokeThickness: 4,
-                offsetY: 10, fontFamily: "Luckiest Guy",
+            
+            { type: "text", content: "Gate", fontSize: sizeFont,  color: optionsColor, 
+                stroke: strokeColor, strokeThickness: 1, offsetY: 10, fontFamily: font,
                 callback: function () {
                     changePlayMode(playModes[2], this);
                 }
             },
-            {
-                type: "text", content: "Pause", fontSize: optionsFontSize,
-                color: optionsColor, stroke: "0x000000", strokeThickness: 4,
-                offsetY: 90, fontFamily: "Luckiest Guy",
+            
+            { type: "text", content: "Pause", fontSize: sizeFont, color: optionsColor, 
+                stroke: strokeColor, strokeThickness: 1, offsetY: 90, fontFamily: font,
                 callback: function () {
                     changePlayMode(playModes[3], this);
                 }
             },
-            {
-                type: "text", content: "None", fontSize: optionsFontSize,
-                color: optionsColor, stroke: "0x000000", strokeThickness: 4,
-                offsetY: 170,  fontFamily: "Luckiest Guy",
+            
+            { type: "text", content: "None", fontSize: sizeFont, color: optionsColor, 
+                stroke: strokeColor, strokeThickness: 1, offsetY: 170,  fontFamily: font,
                 callback: function () {
                     changePlayMode(playModes[4], this);
                 }
             },
-            {
-                type: "text", content: "Allow Multichannel", fontSize: optionsFontSize, color: optionsColor,
-                offsetY: 270, offsetX: 0,  fontFamily: "Luckiest Guy",
-                stroke: "0x000000", strokeThickness: 3, 
+            
+            { type: "text", content: "Allow Multichannel", fontSize: sizeFont, color: optionsColor,
+                offsetY: 270, offsetX: 0,  fontFamily: font, stroke: '0xf00fff', strokeThickness: 3, 
                 callback: function () {
                     allowMultiple(this);
                 }
             },
-            {
-                type: "image", content: "ok", offsetY: 100, offsetX: 300, contentScale: 0.75,
+            
+            { type: "image", content: "ok", offsetY: 100, offsetX: 300, contentScale: 0.75,
                 callback: function () {
                     modal.hideModal('options');
-                    button7.inputEnabled = true;
+                    _this.inputEnabled = true;
                 }
             },
         ]
@@ -310,7 +210,6 @@ function openOptions(){
    modal.showModal("options"); 
 
    if (multiSounds) modal.getModalItem('options',9).tint = 0x00ff00;
-   
    if (mode == 'toggle') modal.getModalItem('options',4).tint = 0x00ff00;
    else if (mode == 'trigger') modal.getModalItem('options',5).tint = 0x00ff00;
    else if (mode == 'gate') modal.getModalItem('options',6).tint = 0x00ff00;
@@ -338,36 +237,89 @@ function allowMultiple(btn){
     else { btn.tint = 0xffffff; }
 }
 
+function createSoundBtns(){        
+    soundBtnsGroup = game.add.physicsGroup(Phaser.Physics.ARCADE);
+	        
+    for(b = 0; b < SOUND_BUTTONS_N; b++){
+    	soundButtons[b] = soundBtnsGroup.create(28 + (275 * (b%3)), 15 + (Math.floor(b/3) * 220), 'button');
+    	soundButtons[b].alpha = 0.82;
+    	soundButtons[b].inputEnabled = true;
+
+		soundButtons[b].events.onInputDown.add(playSound, this);
+		
+        soundButtons[b].events.onInputUp.add(function(){
+            if (mode == 'gate') stopSounds();
+        }, this);  
+    }
+    
+    for(t = 0; t < SOUND_BUTTONS_N; t++){
+    	texts[t] = game.add.text(0, 0, textsText[t], {
+        	font: '48px ' + font, fill: 'purple', align: 'center', stroke:'grey', strokeThickness: 1
+   		});
+   		
+   		texts[t].x = soundButtons[t].x + soundButtons[t].width / 2 - texts[t].width / 2;
+   		texts[t].y = soundButtons[t].y + soundButtons[t].height / 2 - texts[t].height / 2;
+    }
+}
+
+function createMusicBtns(){
+	musicBtnsGroup = game.add.physicsGroup(Phaser.Physics.ARCADE);
+	
+    for(m = 0; m < MUSIC_BUTTONS_N; m++){
+    	musicButtons[m] = musicBtnsGroup.create(15 + (280 * m), 960, 'musicBtn');
+    	musicButtons[m].alpha = 0.85;
+    	musicButtons[m].inputEnabled = true;
+    	musicButtons[m].scale.set(1, 0.8);
+
+    	musicButtons[m].events.onInputDown.add(playMusic, this);        
+    }
+ 
+    for(t = 0; t < MUSIC_BUTTONS_N; t++){
+    	musicText[t] = game.add.text(0, 0, textsMusicText[t], {
+        	font: '56px ' + font, fill: 'maroon', align: 'center', stroke:'red', strokeThickness: 2
+   		});
+   		
+   		musicText[t].x = musicButtons[t].x + musicButtons[t].width / 2 - musicText[t].width / 2;
+   		musicText[t].y = musicButtons[t].y + musicButtons[t].height / 2 - musicText[t].height / 2 + 10;
+    }
+    
+	musicAddText = game.add.text(20, 895, 'ADD MUSIC:', {
+		font: '48px ' + font, fill: 'yellow', align: 'center', stroke:'black', strokeThickness: 5
+	});
+}
+
 function loadSounds(){
+    sfxtrump1 = game.add.audio('trump1');
+    sfxtrump2 = game.add.audio('trump2');
+    sfxtrump3 = game.add.audio('trump3');
+    sfxtrump4 = game.add.audio('trump4');
+    sfxtrump5 = game.add.audio('trump5');
+    sfxtrump6 = game.add.audio('trump6');
+    sfxtrump7 = game.add.audio('trump7');
+    sfxtrump8 = game.add.audio('trump8');
+    sfxtrump9 = game.add.audio('trump9');
+    sfxtrump10 = game.add.audio('trump10');
+    sfxtrump11 = game.add.audio('trump11');
+    sfxtrump12 = game.add.audio('trump12');
+    
     sounds = [ 
-        sfxtrump1 = game.add.audio('trump1'),
-        sfxtrump2 = game.add.audio('trump2'),
-        sfxtrump3 = game.add.audio('trump3'),
-        sfxtrump4 = game.add.audio('trump4'),
-        sfxtrump5 = game.add.audio('trump5'),
-        sfxtrump6 = game.add.audio('trump6'),
-        sfxtrump7 = game.add.audio('trump7'),
-        sfxtrump8 = game.add.audio('trump8'),
-        sfxtrump9 = game.add.audio('trump9'),
-        sfxtrump10 = game.add.audio('trump10'),
-        sfxtrump11 = game.add.audio('trump11'),
-        sfxtrump12 = game.add.audio('trump12') 
+        sfxtrump1, sfxtrump2, sfxtrump3,
+        sfxtrump4, sfxtrump5, sfxtrump6,
+        sfxtrump7, sfxtrump8, sfxtrump9,
+        sfxtrump10, sfxtrump11, sfxtrump12
     ];
     
-    sfxMusic = game.add.audio('musicSfx', 0.65, true);
+    sfxMusic = game.add.audio('music1', 0.7, true);
+    sfxMusic2 = game.add.audio('music2', 0.7, true);
+    sfxMusic3 = game.add.audio('music3', 0.7, true);
+    
+    musics = [sfxMusic, sfxMusic2, sfxMusic3];
 }
 
 function initAd(){
-    var admobid = {};
-
-    admobid = {
-        banner: 'ca-app-pub-9795366520625065/2986546604'
-    };
-
-    if(AdMob) AdMob.createBanner({
-       adId: admobid.banner,
-       position: AdMob.AD_POSITION.BOTTOM_CENTER,
-       autoShow: true,
-       isTesting: false
-    });
+ 	if(AdMob) AdMob.createBanner({
+  	  	adId: 'ca-app-pub-9795366520625065/7045597764',
+  	  	position: AdMob.AD_POSITION.TOP_CENTER,
+  	  	autoShow: true
+  	});
 }

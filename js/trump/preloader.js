@@ -13,8 +13,8 @@ preloader.prototype = {
         });
         
         this.game.load.image("bg", "assets/trump/images/trump.jpg");
-        this.game.load.image("button", "assets/trump/images/button.png");
-        this.game.load.image("gear", "assets/trump/images/gearBtn.png");
+        this.game.load.spritesheet("button", "assets/trump/images/button4.png", 486/2, 185);
+        this.game.load.image("gear", "assets/trump/images/gearBtn2.png");
         this.game.load.image("ok", "assets/trump/images/ok.png");
         this.game.load.image("musicBtn", "assets/trump/images/musicBtn.png");
         this.game.load.image("panel", "assets/trump/images/panel.png");
@@ -32,13 +32,13 @@ preloader.prototype = {
         this.game.load.audio('trump11', 'assets/trump/audio/trump8_pussi.ogg');
         this.game.load.audio('trump12', 'assets/trump/audio/trump9_dontKnow.ogg');
         
-        this.game.load.audio('musicSfx', 'assets/trump/audio/music.ogg');
+        this.game.load.audio('music1', 'assets/trump/audio/music1.ogg');
+        this.game.load.audio('music2', 'assets/trump/audio/music2.ogg');
+        this.game.load.audio('music3', 'assets/trump/audio/music3.ogg');
     },
     
     create: function(){
-        this.game.state.start("Game"); 
-        
-        initAd(); 
+        this.game.state.start("Game");  
     }
 };
 
